@@ -1,0 +1,87 @@
+package com.example.wanghaiyan.mhbk;
+
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
+import android.widget.Adapter;
+import android.widget.TextView;
+import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ShowActivity extends AppCompatActivity {
+
+    private Mizuho mizuho = new Mizuho();
+    private TextView txbBrnchNo,rdoTransType,txbAccNo,txbNm,lstBdayYMD,password,txbPbLstBal,code,url;
+    private String month,day,lastYMD;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout refresh_layout;
+    private RecycDemoAdapter adapter;
+    private List<String> list = new ArrayList<>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show);
+        init();
+    }
+
+    private void init(){
+
+        recyclerView = findViewById(R.id.recyclerview);
+        refresh_layout = findViewById(R.id.refresh_layout);
+        for(int i = 0 ;i < 9;i++){
+            list.add(i+"");
+        }
+        Toast.makeText(this,list.size()+"",Toast.LENGTH_SHORT).show();
+        adapter = new RecycDemoAdapter(this, list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                adapter.update(list);
+                refresh_layout.setRefreshing(false);
+            }
+        });
+
+//        mizuho = (Mizuho) getIntent().getSerializableExtra("mizuho");
+//        txbBrnchNo = findViewById(R.id.txbBrnchNo);
+//        rdoTransType = findViewById(R.id.rdoTransType);
+//        txbAccNo = findViewById(R.id.txbAccNo);
+//        txbNm = findViewById(R.id.txbNm);
+//        lstBdayYMD = findViewById(R.id.lstBdayYMD);
+//        password = findViewById(R.id.password);
+//        txbPbLstBal = findViewById(R.id.txbPbLstBal);
+//        code = findViewById(R.id.code);
+//        url = findViewById(R.id.url);
+//        txbBrnchNo.setText(mizuho.getTxbBrnchNo());
+//        rdoTransType.setText(mizuho.getRdoTransType());
+//        txbAccNo.setText(mizuho.getTxbAccNo());
+//        txbNm.setText(mizuho.getTxbNm());
+//        password.setText(mizuho.getPASSWD_CshCrdPwd());
+//        txbPbLstBal.setText(mizuho.getTxbPbLstBal());
+//        code.setText(mizuho.getCode());
+//        url.setText(mizuho.getUrl());
+//        lastYMD = mizuho.getLstBdayYear();
+//        month = mizuho.getLstBdayMnth();
+//        day = mizuho.getLstBdayDay();
+//        if(Integer.valueOf(month)<10){
+//            lastYMD = lastYMD + "0" + month;
+//        } else {
+//            lastYMD = lastYMD + month;
+//        }
+//        if(Integer.valueOf(day)<10){
+//            lastYMD = lastYMD + "0"+day;
+//        } else {
+//            lastYMD = lastYMD + day;
+//        }
+//        lstBdayYMD.setText(lastYMD);
+    }
+}
